@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Platform, Text, View } from 'react-native';
+import { Platform } from 'react-native';
 import Geolocation, { GeoCoordinates } from 'react-native-geolocation-service';
+import MapView, { Marker } from 'react-native-maps';
+import styled from 'styled-components/native';
+
+const FlexView = styled.View`
+  flex: 1;
+`;
 
 const requestPermission = async () => {
   try {
@@ -23,6 +29,7 @@ const Main = () => {
         Geolocation.getCurrentPosition(
           (pos) => {
             setLocation(pos.coords);
+            console.log(pos.coords);
           },
           (error) => {
             console.error(error);
@@ -34,11 +41,25 @@ const Main = () => {
     });
   }, []);
 
+  console.log(location);
   return (
-    <View>
-      <Text>{location?.latitude}</Text>
-      <Text>{location?.longitude}</Text>
-    </View>
+    <FlexView>
+      <MapView
+        style={{ flex: 1 }}
+        initialRegion={{
+          latitude: 37.383062,
+          longitude: 126.959814,
+          latitudeDelta: 0.002,
+          longitudeDelta: 0.002,
+        }}
+      >
+        <Marker
+          coordinate={{ latitude: 37.383062, longitude: 126.959814 }}
+          title="marker"
+          description="this is marker"
+        />
+      </MapView>
+    </FlexView>
   );
 };
 
