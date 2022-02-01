@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Platform } from 'react-native';
+import { Platform, Text, View } from 'react-native';
 import Geolocation, { GeoCoordinates } from 'react-native-geolocation-service';
 import MapView, { Marker } from 'react-native-maps';
 import styled from 'styled-components/native';
@@ -46,7 +46,7 @@ const Main = () => {
 
   return (
     <FlexView>
-      {location && (
+      {location ? (
         <MapView
           style={{ flex: 1 }}
           initialRegion={{
@@ -62,6 +62,10 @@ const Main = () => {
             description="this is marker"
           />
         </MapView>
+      ) : (
+        <View>
+          <Text>Loading...</Text>
+        </View>
       )}
     </FlexView>
   );
