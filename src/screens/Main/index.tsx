@@ -24,12 +24,15 @@ const Main = () => {
   const [location, setLocation] = useState<GeoCoordinates>();
 
   useEffect(() => {
+    getCurrentPosition();
+  }, []);
+
+  const getCurrentPosition = () => {
     requestPermission().then((result) => {
       if (result === 'granted') {
         Geolocation.getCurrentPosition(
           (pos) => {
-            setLocation(pos.coords);
-            console.log(pos.coords);
+            setLocation({ ...pos.coords });
           },
           (error) => {
             console.error(error);
@@ -39,26 +42,27 @@ const Main = () => {
         console.log('permission denied');
       }
     });
-  }, []);
+  };
 
-  console.log(location);
   return (
     <FlexView>
-      <MapView
-        style={{ flex: 1 }}
-        initialRegion={{
-          latitude: 37.383062,
-          longitude: 126.959814,
-          latitudeDelta: 0.002,
-          longitudeDelta: 0.002,
-        }}
-      >
-        <Marker
-          coordinate={{ latitude: 37.383062, longitude: 126.959814 }}
-          title="marker"
-          description="this is marker"
-        />
-      </MapView>
+      {location && (
+        <MapView
+          style={{ flex: 1 }}
+          initialRegion={{
+            latitude: location.latitude,
+            longitude: location.longitude,
+            latitudeDelta: 0.002,
+            longitudeDelta: 0.002,
+          }}
+        >
+          <Marker
+            coordinate={{ latitude: location.latitude, longitude: location.longitude }}
+            title="marker"
+            description="this is marker"
+          />
+        </MapView>
+      )}
     </FlexView>
   );
 };
