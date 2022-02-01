@@ -40,7 +40,6 @@ const Main = () => {
         );
       } else {
         console.log('permission denied');
-        requestPermission();
       }
     });
   };
