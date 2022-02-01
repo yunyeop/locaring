@@ -1,0 +1,6 @@
+module Pods_locaring {
+  umbrella header "Pods-locaring-umbrella.h"
+
+  export *
+  module * { export * }
+}
