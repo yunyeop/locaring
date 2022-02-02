@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Platform, Text, View } from 'react-native';
+import { PermissionsAndroid, Platform, Text, View } from 'react-native';
 import Geolocation, { GeoCoordinates } from 'react-native-geolocation-service';
 import MapView, { Marker } from 'react-native-maps';
 import styled from 'styled-components/native';
@@ -13,7 +13,21 @@ const requestPermission = async () => {
     if (Platform.OS === 'ios') {
       return await Geolocation.requestAuthorization('always');
     } else if (Platform.OS === 'android') {
-      console.log('This function is not available in android.');
+      const hasPermission = await PermissionsAndroid.check(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      );
+
+      if (hasPermission) {
+        return 'granted';
+      } else {
+        const status = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        );
+
+        if (status === 'granted') {
+          return status;
+        }
+      }
     }
   } catch (e) {
     console.error(e);
@@ -24,6 +38,7 @@ const Main = () => {
   const [location, setLocation] = useState<GeoCoordinates>();
 
   useEffect(() => {
+    console.log(Platform.OS);
     getCurrentPosition();
   }, []);
 
