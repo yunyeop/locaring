@@ -34,7 +34,7 @@ const requestPermission = async () => {
   }
 };
 
-const Main = () => {
+const MainMapView = () => {
   const [location, setLocation] = useState<GeoCoordinates>();
 
   useEffect(() => {
@@ -51,6 +51,11 @@ const Main = () => {
           },
           (error) => {
             console.error(error);
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0,
           },
         );
       } else {
@@ -106,4 +111,4 @@ const NMap = () => {
   );
 };
 
-export default Main;
+export default MainMapView;
