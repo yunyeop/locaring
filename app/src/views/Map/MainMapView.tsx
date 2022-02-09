@@ -38,6 +38,7 @@ const requestPermission = async () => {
 const MainMapView = () => {
   const mapRef = useRef(null);
   const [location, setLocation] = useState<Location>();
+  const spotLocation: Location = { latitude: 37.3728517, longitude: 126.9633733 };
 
   useEffect(() => {
     console.log(Platform.OS);
@@ -55,7 +56,7 @@ const MainMapView = () => {
             console.error(error);
           },
           {
-            enableHighAccuracy: false,
+            enableHighAccuracy: true,
             timeout: 1500,
             maximumAge: 0,
           },
@@ -67,14 +68,8 @@ const MainMapView = () => {
   };
 
   const handleMapClick = (e: { x: number; y: number; latitude: number; longitude: number }) => {
-    console.log(e.latitude);
-    console.log(e.longitude);
-    console.log(mapRef.current);
+    console.log(e.latitude, e.longitude);
   };
-
-  useEffect(() => {
-    console.log(mapRef.current);
-  }, [mapRef]);
 
   return (
     <FlexView>
@@ -91,7 +86,7 @@ const MainMapView = () => {
           {/* home */}
           <Marker
             image={require('../../assets/icons/house.png')}
-            coordinate={{ ...location }}
+            coordinate={{ ...spotLocation }}
             width={50}
             height={50}
             onClick={() => console.log('onClick! p0')}
